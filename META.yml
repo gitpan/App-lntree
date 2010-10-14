@@ -13,4 +13,9 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: App-lntree
-version: 0.0010
+requires:
+  File::Spec: 0
+  File::Spec::Link: 0
+  Getopt::Usaginato: 0
+  Path::Class: 0
+version: 0.0011

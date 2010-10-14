@@ -24,8 +24,13 @@ my %WriteMakefileArgs = (
   ],
   'LICENSE' => 'perl',
   'NAME' => 'App::lntree',
-  'PREREQ_PM' => {},
-  'VERSION' => '0.0010',
+  'PREREQ_PM' => {
+    'File::Spec' => '0',
+    'File::Spec::Link' => '0',
+    'Getopt::Usaginato' => '0',
+    'Path::Class' => '0'
+  },
+  'VERSION' => '0.0011',
   'test' => {
     'TESTS' => 't/*.t'
   }

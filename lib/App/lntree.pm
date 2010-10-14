@@ -1,6 +1,6 @@
 package App::lntree;
 BEGIN {
-  $App::lntree::VERSION = '0.0010';
+  $App::lntree::VERSION = '0.0011';
 }
 # ABSTRACT: Create a best-effort symlink-based mirror of a directory
 
@@ -106,7 +106,7 @@ App::lntree - Create a best-effort symlink-based mirror of a directory
 
 =head1 VERSION
 
-version 0.0010
+version 0.0011
 
 =head1 SYNOPSIS
 
