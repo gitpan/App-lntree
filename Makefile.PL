@@ -27,10 +27,10 @@ my %WriteMakefileArgs = (
   'PREREQ_PM' => {
     'File::Spec' => '0',
     'File::Spec::Link' => '0',
-    'Getopt::Usaginato' => '0',
+    'Getopt::Usaginator' => '0',
     'Path::Class' => '0'
   },
-  'VERSION' => '0.0011',
+  'VERSION' => '0.0012',
   'test' => {
     'TESTS' => 't/*.t'
   }
