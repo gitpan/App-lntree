@@ -10,8 +10,8 @@ use Path::Class;
 my ( $source, $target, $readlink, $file, $directory );
 
 $source = dir(qw/ t assets source1 /);
-$target = dir tempdir;
 
+$target = dir tempdir;
 App::lntree->lntree( $source, $target );
 ok( -l file $target, qw/ a / );
 is( file( $target, qw/ a /)->stat->size, 14 );
@@ -40,5 +40,10 @@ is( file( $target, qw/ b d /)->stat->size, 12 );
 $target = file( File::Temp->new->filename );
 $target->openw->print( '' );
 throws_ok { App::lntree->lntree( dir(qw/ t assets source1 /), $target ) } qr/already exists and is a file/;
+
+$source = dir(qw/ t assets source1 b /);
+$target = dir tempdir, 'b';
+App::lntree->lntree( $source, $target );
+ok( -l file( $target, qw/ c / ) );
 
 done_testing;

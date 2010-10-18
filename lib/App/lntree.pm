@@ -1,6 +1,6 @@
 package App::lntree;
 BEGIN {
-  $App::lntree::VERSION = '0.0012';
+  $App::lntree::VERSION = '0.0013';
 }
 # ABSTRACT: Create a best-effort symlink-based mirror of a directory
 
@@ -47,6 +47,8 @@ sub lntree {
     die "Source directory ($source) does not exist or is not a directory" unless -d $source;
     die "Target directory ($target) already exists and is a file" if -f $target;
 
+    my $dry_run = 0;
+
     $source = dir $source;
     $target = dir $target;
     my $absolute = $target->is_absolute;
@@ -55,26 +57,26 @@ sub lntree {
         my ( $from_path, $to_path ) = App::lntree->resolve( $source, $target, $file );
         if ( -d $file ) {
             my $dir = $target->subdir( $to_path );
-            $dir->mkpath;
+            $dry_run or $dir->mkpath;
         }
         else {
             my $file = $target->file( $to_path );
             my $link_path = $from_path;
             if ( -l $file ) {
-                unlink $file or warn "Unable to unlink symlink \"$to_path\": $!\n";
+                $dry_run or unlink $file or warn "Unable to unlink symlink \"$to_path\": $!\n";
             }
             elsif ( -e $file ) {
                 return;
             }
-            symlink $link_path, $file or die "Unable to symlink \"$link_path -> \"$to_path\": $!\n";
+            $dry_run or symlink $link_path, $file or die "Unable to symlink \"$link_path -> \"$to_path\": $!\n";
         }
     } );
 }
 
 sub resolve {
     my $self = shift;
-    my $from = shift;
-    my $to = shift;
+    my $from = dir shift;
+    my $to = dir shift;
     my $path = shift;
 
     my $absolute = File::Spec->file_name_is_absolute( $to );
@@ -85,7 +87,7 @@ sub resolve {
     }
     else {
         my @path = File::Spec->splitdir( $path );
-        my $depth = @path - 2; # How many .. should be in the from path
+        my $depth = @path - ( 1 + $from->dir_list );
         $from_path = File::Spec->canonpath( join '/', ( ( '..' ) x $depth ), File::Spec->abs2rel( $path, $to ) );
     }
 
@@ -106,7 +108,7 @@ App::lntree - Create a best-effort symlink-based mirror of a directory
 
 =head1 VERSION
 
-version 0.0012
+version 0.0013
 
 =head1 SYNOPSIS
 
